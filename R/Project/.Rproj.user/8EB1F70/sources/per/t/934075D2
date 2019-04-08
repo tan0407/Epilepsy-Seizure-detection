@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1554559708432.000,
+    "dirty" : false,
+    "encoding" : "ISO8859-1",
+    "folds" : "",
+    "hash" : "2427147196",
+    "id" : "934075D2",
+    "lastKnownWriteTime" : 1554564360,
+    "last_content_update" : 1554564360774,
+    "path" : "~/Fac/M1/Projet_M1/R/Project/quantization.R",
+    "project_path" : "quantization.R",
+    "properties" : {
+        "cursorPosition" : "24,0",
+        "scrollLine" : "5",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
