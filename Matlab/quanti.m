@@ -254,4 +254,7 @@ end
 
 brushquantix = brushquantix(8298:9206,1); %Only this part of the data is useful because the crisis is only there
 [peaksBrush,locsBrush] = findpeaks(brushquantix); %calculates the number of peaks
-figure('Name','Brush Teeth');plot(brushquantix);        
+figure('Name','Brush Teeth');plot(brushquantix);
+
+
+clear i ncols nrows 
