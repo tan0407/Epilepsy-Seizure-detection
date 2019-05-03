@@ -118,7 +118,7 @@ for i=1:2:nrows*2
     end  
 end
 
-epiquantix = epiquantix(4637:5544,1);%Only this part of the data is useful because the crisis is only there
+%epiquantix = epiquantix(4637:5544,1);%Only this part of the data is useful because the crisis is only there
 
 [peaksEpilepsy,locsEpilepsy] = findpeaks(epiquantix); %calculates the number of peaks
 figure('Name','Epilepsie');plot(epiquantix);
@@ -152,7 +152,7 @@ for i=1:2:nrows*2
     end  
 end
 
-runquantix = runquantix(3829:4737,1);%Only this part of the data is useful because the crisis is only there
+%runquantix = runquantix(3829:4737,1);%Only this part of the data is useful because the crisis is only there
 
 [peaksRunning,locsRunning] = findpeaks(runquantix); %calculates the number of peaks
 figure('Name','Running');plot(runquantix);
