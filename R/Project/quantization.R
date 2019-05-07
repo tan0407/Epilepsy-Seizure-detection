@@ -46,10 +46,11 @@ quantization <- function (data,threshold){
   return(mat);
 }
 
-threshold = 150
+threshold = 0.4
 pingpongAcc[3018:3926,]
 quantiPingPongQuantGyro = quantization(pingpongGyr,threshold)
+max(quantiPingPongQuantGyro)
 quantiPingPongQuantGyro= quantiPingPongQuantGyro[3018:3926,]
 quantiPingPongQuantGyro
-plot(quantiPingPongQuantGyro)
+plot(quantiPingPongQuantGyro[,1],type = "b")
 # plot(quantiPingPongAccGyro)
