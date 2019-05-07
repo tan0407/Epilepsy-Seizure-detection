@@ -7,6 +7,6 @@ function [quantized] = quantization(data,threshold)
 
 endfunction
 
-function=frameDetection(data,frameLength)
+function[]=frameDetection(data,frameLength)
     //
 endfunction
