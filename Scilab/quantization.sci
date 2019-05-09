@@ -12,6 +12,7 @@ function[]=frameDetection(data,frameLength)
     nbframesTooHigh = 0; //nb conscutif de frames qui depassent le seuil
     curr = data(i,i+1000);
 //    prev = data(i-1000,i);
+
     //Peakdetection on frame 
     //if npeaks > threshold , nbframesTooHigh ++
     //else nbframesTooHigh = 0
