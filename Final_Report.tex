@@ -1,6 +1,9 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{amsmath}
+\usepackage{amssymb}
 
 \usepackage[top=3.5cm, bottom=3.5cm, left=3.5cm, right=2.5cm]{geometry}
 
@@ -41,6 +44,8 @@ Our project...
 \subsection{About the situation}
 \paragraph{}
 
+Let $X1,...Xn$ independant and identically distribued random variables with a mean $\mu$ and a standard deviation $\sigma$. We denote $\bar{X}_n = n^{-1} \sum_{i=1}^{n}X_i$. Then the law of $\frac{\bar{X}_n- \mu}{\sigma / \sqrt{n}}$ tends to the reduced central normal law. This is also written : 
+for all $a$ and $b$ real numbers, \newline
 
-
+where $Z$ is a reduced centered Gaussian variable, $Z\sim \mathcal{N}(0,1)$
 \end{document}
