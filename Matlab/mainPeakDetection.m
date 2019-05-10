@@ -97,7 +97,7 @@ elseif choix ==1
         isCrisis = true;
     else isCrisis = false;
     end
-
+    clear begin scale CurrentWindowEpiAcc CurrentWindowEpiGyro CurrentWindowEpiEMG CurrentWindowRunGyro CurrentWindowRunEMG CurrentWindowRunAcc CurrentWindowBrushGyro CurrentWindowBrushEMG CurrentWindowBrushAcc CurrentWindowBasketGyro CurrentWindowBasketEMG CurrentWindowBasketEMG CurrentWindowPingGyro CurrentWindowPingEMG CurrentWindowPingAcc ;
 end
 
 
