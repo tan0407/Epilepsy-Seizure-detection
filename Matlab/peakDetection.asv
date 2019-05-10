@@ -16,7 +16,7 @@ function [nbPeaksGyro,nbPeaksEmg,nbPeaksAcc] = peakDetection(GyroData,EMGData,Ac
         [p,h] = findpeaks(EMGData(:,i));       
         nbPeaksEmg = nbPeaksEmg + size(p,1);
     end
-    nbPeaksEmg = floor(nbPeaksEmg/c);
+    nbPeaksEmg = nbPeaksEmg/c;
     
     [r,c] = size(AccData);
     nbPeaksAcc=0;
@@ -24,6 +24,6 @@ function [nbPeaksGyro,nbPeaksEmg,nbPeaksAcc] = peakDetection(GyroData,EMGData,Ac
         [p,h] = findpeaks(AccData(:,i));       
         nbPeaksAcc = nbPeaksAcc + size(p,1);
     end
-    nbPeaksAcc = floor(nbPeaksAcc/c);
+    nbPeaksAcc = nbPeaksAcc/c;
 end
 
