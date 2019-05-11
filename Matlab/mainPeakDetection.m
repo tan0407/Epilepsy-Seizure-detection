@@ -2,6 +2,9 @@ thresholdGyro = 150;
 thresholdAcc = 0.4;
 thresholdEMG = 0.8;
 
+%Generation of a crisis
+GenEpi = crisisGenerator(EpiAcc,EpiEMG,EpiGyro);
+
 %Quantification
 
 QuantiBrushGyro = quantization(BrushGyro,thresholdGyro);
@@ -32,7 +35,11 @@ QuantiAspiGyro = quantization(AspiGyro,thresholdGyro);
 QuantiAspiEMG = quantization(AspiEMG,thresholdEMG);
 QuantiAspiAcc = quantization(AspiAcc,thresholdAcc);
 
-choix = 1;
+QuantiEpi2Gyro = quantization(GenEpi.Gyro,thresholdGyro);
+QuantiEpi2EMG = quantization(GenEpi.EMG,thresholdEMG);
+QuantiEpi2Acc = quantization(GenEpi.Acc,thresholdAcc);
+
+choix = 0;
 
 %PeakDetection Without Windows
 if choix == 0
@@ -41,8 +48,9 @@ if choix == 0
     [PeaksBrushGyro,PeaksBrushEMG,PeaksBrushAcc] = peakDetection(QuantiBrushGyro,QuantiBrushEMG,QuantiBrushAcc);
     [PeaksPingGyro,PeaksPingEMG,PeaksPingAcc] = peakDetection(QuantiPingGyro,QuantiPingEMG,QuantiPingAcc);
     [PeaksBasketGyro,PeaksBasketEMG,PeaksBasketAcc] = peakDetection(QuantiBasketGyro,QuantiBasketEMG,QuantiBasketAcc);
+    [PeaksEpi2Gyro,PeaksEpi2EMG,PeaksEpi2Acc] = peakDetection(QuantiEpi2Gyro,QuantiEpi2EMG,QuantiEpi2Acc);
 
-    if(PeaksRunGyro>0.9*TSGyro || PeaksRunEMG>0.9*TSEMG || PeaksRunAcc > 0.9*TSAcc)
+    if(PeaksEpi2Gyro>0.9*TSGyro || PeaksEpi2EMG>0.9*TSEMG || PeaksEpi2Acc > 0.9*TSAcc)
         isCrisis = true;
     else isCrisis = false;
     end
@@ -86,14 +94,23 @@ elseif choix ==1
     CurrentWindowPingGyro = QuantiBasketGyro(begin:begin+Window,:);
     CurrentWindowPingEMG = QuantiBasketEMG(floor(begin*scale):floor((begin+Window)*scale),:);
     
+      
+    begin = floor(rand()*10000);
+    scale = size(QuantiEpi2EMG,1)/size(QuantiEpi2Acc,1);
+
+    CurrentWindowEpi2Acc = QuantiBasketAcc(begin:begin+Window,:);
+    CurrentWindowEpi2Gyro = QuantiBasketGyro(begin:begin+Window,:);
+    CurrentWindowEpi2EMG = QuantiBasketEMG(floor(begin*scale):floor((begin+Window)*scale),:);
 
     [TSGyro,TSEMG,TSAcc] = peakDetection(CurrentWindowEpiGyro,CurrentWindowEpiEMG,CurrentWindowEpiAcc);
     [PeaksRunGyro,PeaksRunEMG,PeaksRunAcc] = peakDetection(CurrentWindowRunGyro,CurrentWindowRunEMG,CurrentWindowRunAcc);
     [PeaksBrushGyro,PeaksBrushEMG,PeaksBrushAcc] = peakDetection(CurrentWindowBrushGyro,CurrentWindowBrushEMG,CurrentWindowBrushAcc);
     [PeaksBasketGyro,PeaksBasketEMG,PeaksBasketAcc] = peakDetection(CurrentWindowBasketGyro,CurrentWindowBasketEMG,CurrentWindowBasketEMG);
     [PeaksPingGyro,PeaksPingEMG,PeaksPingAcc] = peakDetection(CurrentWindowPingGyro,CurrentWindowPingEMG,CurrentWindowPingAcc);
+    [PeaksEpi2Gyro,PeaksEpi2EMG,PeaksEpi2Acc] = peakDetection(QuantiEpi2Gyro,QuantiEpi2EMG,QuantiEpi2Acc);
 
-    if(PeaksPingGyro>0.9*TSGyro || PeaksPingEMG>0.9*TSEMG || PeaksPingAcc > 0.9*TSAcc)
+
+    if(PeaksEpi2Gyro>0.9*TSGyro || PeaksEpi2EMG>0.9*TSEMG || PeaksEpi2Acc > 0.9*TSAcc)
         isCrisis = true;
     else isCrisis = false;
     end
