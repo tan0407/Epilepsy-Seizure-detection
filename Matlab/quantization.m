@@ -1,6 +1,6 @@
-function quantized = quantization(data,threshold)
-    [nrows, ncols] = size(data);
+function quantized = quantization(feature,features_threshold)
+    [nrows, ncols] = size(feature);
     quantized = zeros(nrows,ncols);
-    quantized(data>threshold | data<threshold)=1;
-    quantized(data<threshold & data>-threshold)=0;
+    quantized(feature>features_threshold | feature<-features_threshold)=1;
 end 
+

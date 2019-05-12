@@ -1,4 +1,4 @@
-thresholdGyro = 150;
+thresholdGyro = 100;
 thresholdAcc = 0.4;
 thresholdEMG = 0.8;
 
@@ -39,7 +39,7 @@ QuantiEpi2Gyro = quantization(GenEpi.Gyro,thresholdGyro);
 QuantiEpi2EMG = quantization(GenEpi.EMG,thresholdEMG);
 QuantiEpi2Acc = quantization(GenEpi.Acc,thresholdAcc);
 
-choix = 0;
+choix = 1;
 
 %PeakDetection Without Windows
 if choix == 0
@@ -58,7 +58,7 @@ if choix == 0
 %PeakDetection Windowed
 elseif choix ==1
     
-    Window = 8000;
+    Window = 235; %The frequency for Gyro & Acc is over 47Hz; It means that a window of 705 values of Gyro is equivalent at 15s of measure 
     begin = floor(rand()*10000);
     scale = size(QuantiEpiEMG,1)/size(QuantiEpiAcc,1);
 

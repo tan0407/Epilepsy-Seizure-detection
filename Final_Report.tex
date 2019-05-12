@@ -48,4 +48,22 @@ Let $X1,...Xn$ independant and identically distribued random variables with a me
 for all $a$ and $b$ real numbers, \newline
 
 where $Z$ is a reduced centered Gaussian variable, $Z\sim \mathcal{N}(0,1)$
+
+\begin{algorithm}
+\SetAlgoLined
+\DontPrintSemicolon
+\KwResult{$quantized$ : the data quantized}
+\KwData{$data$ : One feature of an activity (a matrix), $TS$ : a threshold}
+\caption{quantization}
+$quantized \gets []$;\;
+\ForEach{$data_i,_j$ in $data$}{
+	\If { $data_i,_j \geq TS$ or $data_i,_j \leq -TS$} {
+		$quantized_i,_j$ = 1;\;
+	}
+	\Else{
+		$quantized_i,_j$ = 0;\;
+	}
+}
+\end{algorithm}
+
 \end{document}
