@@ -1,0 +1,14 @@
+function [cumsumMat, anomaly] = cumsumOnMatrix(mat,TS,w)
+    [r,c] = size(mat);
+    cumsumMat=zeros(c);
+    anomalies=0;
+    for col=1:c
+        [cumsumact,an]=cumsumOnVector(mat(:,col),TS,w);
+        cumsumMat(col)=cumsumact;
+        if (an==1)
+            anomalies=anomalies+1;
+        end
+    end
+        
+end
+
