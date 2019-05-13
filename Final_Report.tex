@@ -65,5 +65,28 @@ $quantized \gets []$;\;
 	}
 }
 \end{algorithm}
+\; \newline
+ \newline
+$S_{n+1} = max(0,S_n+X-\omega_n)$
 
+\begin{algorithm}
+\SetAlgoLined
+\DontPrintSemicolon
+\KwResult{A boolean if there is an abrupt changing}
+\KwData{$X$ : a Gaussian distribution, $TS$ : a threshold, $\omega$ : a weight}
+\caption{CUMSUM}
+$n =0$;\;
+$S_n = 0$;\;
+\While{$S_n < TS$}{
+	\If{$n == length(X)$}{
+		\Return false;\;
+	}
+	$S_n = max(0,S_n+X-\omega)$;\;
+	$n=n+1$;
+}
+\Return true;\;
+
+\end{algorithm}
+
+\Huge $Z = \frac{X-\mu}{\sigma}$
 \end{document}

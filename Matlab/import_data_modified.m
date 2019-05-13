@@ -17,12 +17,18 @@ PingAcc = PingAcc-mean(PingAcc,1);
 
 load(strcat(actualpath,'\Data\Simulations-20190219T113602Z-001\Simulations\walking +eplibsy\matlab92.mat')); %Getting the data of the epilepsy with the walk
 EpiGyro = mm.myoData.gyro_log();
+EpiWalkGyro = repmat(EpiGyro(3500:13900,:),3,1);
+EpiWalkGyro = EpiWalkGyro-mean(EpiWalkGyro,1);
 EpiGyro = repmat(EpiGyro(9274:11088,:),18,1);
 EpiGyro = EpiGyro-mean(EpiGyro,1);
 EpiEMG = mm.myoData.emg_log();
+EpiWalkEMG = repmat(EpiEMG(13984:55538,:),3,1);
+EpiWalkEMG = EpiWalkEMG - mean(EpiWalkEMG,1);
 EpiEMG = repmat(EpiEMG(37054:44302,:),18,1);
 EpiEMG = EpiEMG-mean(EpiEMG,1);
 EpiAcc = mm.myoData.accel_log();
+EpiWalkAcc = repmat(EpiAcc(3500:13900,:),3,1);
+EpiWalkAcc = EpiWalkAcc-mean(EpiWalkAcc,1);
 EpiAcc = repmat(EpiAcc(9274:11088,:),18,1);
 EpiAcc = EpiAcc-mean(EpiAcc,1);
 
