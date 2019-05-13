@@ -89,4 +89,25 @@ $S_n = 0$;\;
 \end{algorithm}
 
 \Huge $Z = \frac{X-\mu}{\sigma}$
+
+\begin{algorithm}
+\SetAlgoLined
+\DontPrintSemicolon
+\KwResult{A boolean if there is a rupture}
+\KwData{$previous$ : the previous window, $actual$ : the actual window, $TS_{mean}$ : a threshold for the mean difference,  $TS_{sd}$ : a threshold for the standard variation difference}
+\caption{Rupture detection}
+$localAnomalies=0$;\;
+\ForEach{$axis$ in $actual$}{
+	\If{mean($actual$)-mean($previous$) $ > TS_{mean}$ or var($actual$)-var($previous$) $ > TS_{sd}$}{
+		$localAnomalies=localAnomalies+1$;\;
+	} 
+}
+\If{$localAnomalies \geq 2$}{
+
+	\Return true;\;
+}
+\Else{ 
+	\Return false;\;
+}
+\end{algorithm}
 \end{document}

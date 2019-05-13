@@ -59,7 +59,7 @@ if choix == 0
 elseif choix ==1
     nbfen=0;
     
-    Window = 235; %The frequency for Gyro & Acc is over 47Hz; It means that a window of 705 values of Gyro is equivalent at 15s of measure 
+    Window = 235; %The frequency for Gyro & Acc is over 50Hz and 200Hz for EMG; It means that a window of 235 values of Gyro is equivalent at 5s of measure 
     
     begin1 = floor(rand()*10000);
     scale = size(QuantiEpiEMG,1)/size(QuantiEpiAcc,1);
