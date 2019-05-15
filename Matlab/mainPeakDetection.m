@@ -15,10 +15,6 @@ QuantiEpiGyro = quantization(EpiGyro,thresholdGyro);
 QuantiEpiEMG = quantization(EpiEMG,thresholdEMG);
 QuantiEpiAcc = quantization(EpiAcc,thresholdAcc);
 
-QuantiRunGyro = quantization(RunGyro,thresholdGyro);
-QuantiRunEMG = quantization(RunEMG,thresholdEMG);
-QuantiRunAcc = quantization(RunAcc,thresholdAcc);
-
 QuantiBasketGyro = quantization(BasketGyro,thresholdGyro);
 QuantiBasketEMG = quantization(BasketEMG,thresholdEMG);
 QuantiBasketAcc = quantization(BasketAcc,thresholdAcc);
@@ -39,7 +35,7 @@ QuantiEpi2Gyro = quantization(GenEpi.Gyro,thresholdGyro);
 QuantiEpi2EMG = quantization(GenEpi.EMG,thresholdEMG);
 QuantiEpi2Acc = quantization(GenEpi.Acc,thresholdAcc);
 
-choix = 1;
+choix = 2;
 
 %PeakDetection Without Windows
 if choix == 0
@@ -55,11 +51,11 @@ if choix == 0
     else isCrisis = false;
     end
 
-%PeakDetection Windowed
+%PeakDetection Windowed between 2 crisis
 elseif choix ==1
     nbfen=0;
     
-    Window = 235; %The frequency for Gyro & Acc is over 50Hz and 200Hz for EMG; It means that a window of 235 values of Gyro is equivalent at 5s of measure 
+    Window = 250; %The frequency for Gyro & Acc is over 50Hz and 200Hz for EMG; It means that a window of 235 values of Gyro is equivalent at 5s of measure 
     
     begin1 = floor(rand()*10000);
     scale = size(QuantiEpiEMG,1)/size(QuantiEpiAcc,1);
@@ -105,7 +101,7 @@ elseif choix ==1
     CurrentWindowEpi2EMG = QuantiEpi2EMG(floor(begin2*scale):floor((begin2+Window)*scale),:);
     while (nbfen<3)
         [TSGyro,TSEMG,TSAcc] = peakDetection(CurrentWindowEpiGyro,CurrentWindowEpiEMG,CurrentWindowEpiAcc);
-        [PeaksEpi2Gyro,PeaksEpi2EMG,PeaksEpi2Acc] = peakDetection(QuantiEpi2Gyro,QuantiEpi2EMG,QuantiEpi2Acc);
+        [PeaksEpi2Gyro,PeaksEpi2EMG,PeaksEpi2Acc] = peakDetection(CurrentWindowEpi2Gyro,CurrentWindowEpi2EMG,CurrentWindowEpi2Acc);
         if(PeaksEpi2Gyro>0.9*TSGyro || PeaksEpi2EMG>0.9*TSEMG || PeaksEpi2Acc > 0.9*TSAcc)
             nbfen = nbfen+1;
         else
@@ -133,6 +129,89 @@ elseif choix ==1
 
  
     clear begin1 begin2 scale CurrentWindowEpiAcc CurrentWindowEpiGyro CurrentWindowEpiEMG CurrentWindowRunGyro CurrentWindowRunEMG CurrentWindowRunAcc CurrentWindowBrushGyro CurrentWindowBrushEMG CurrentWindowBrushAcc CurrentWindowBasketGyro CurrentWindowBasketEMG CurrentWindowBasketEMG CurrentWindowPingGyro CurrentWindowPingEMG CurrentWindowPingAcc ;
+
+%PeakDetection Windowed between a crisis and ping pong
+elseif choix ==2
+    nbfen=0;
+    
+    Window = 250; %The frequency for Gyro & Acc is over 50Hz and 200Hz for EMG; It means that a window of 235 values of Gyro is equivalent at 5s of measure 
+    
+    begin1 = floor(rand()*10000);
+    scale = size(QuantiEpiEMG,1)/size(QuantiEpiAcc,1);
+    
+    CurrentWindowEpiAcc = QuantiEpiAcc(begin1:begin1+Window,:);
+    CurrentWindowEpiGyro = QuantiEpiGyro(begin1:begin1+Window,:);
+    CurrentWindowEpiEMG = QuantiEpiEMG(floor(begin1*scale):floor((begin1+Window)*scale),:);
+   
+%     begin = floor(rand()*10000);
+%     scale = size(QuantiRunEMG,1)/size(QuantiRunAcc,1);
+% 
+%     CurrentWindowRunAcc = QuantiRunAcc(begin:begin+Window,:);
+%     CurrentWindowRunGyro = QuantiRunGyro(begin:begin+Window,:);
+%     CurrentWindowRunEMG = QuantiRunEMG(floor(begin*scale):floor((begin+Window)*scale),:);
+%     
+%     begin = floor(rand()*10000);
+%     scale = size(QuantiBrushEMG,1)/size(QuantiBrushAcc,1);
+% 
+%     CurrentWindowBrushAcc = QuantiBrushAcc(begin:begin+Window,:);
+%     CurrentWindowBrushGyro = QuantiBrushGyro(begin:begin+Window,:);
+%     CurrentWindowBrushEMG = QuantiBrushEMG(floor(begin*scale):floor((begin+Window)*scale),:);
+%     
+%     begin = floor(rand()*10000);
+%     scale = size(QuantiBasketEMG,1)/size(QuantiBasketAcc,1);
+% 
+%     CurrentWindowBasketAcc = QuantiBasketAcc(begin:begin+Window,:);
+%     CurrentWindowBasketGyro = QuantiBasketGyro(begin:begin+Window,:);
+%     CurrentWindowBasketEMG = QuantiBasketEMG(floor(begin*scale):floor((begin+Window)*scale),:);
+%     
+%     begin = floor(rand()*10000);
+%     scale = size(QuantiPingEMG,1)/size(QuantiPingAcc,1);
+% 
+%     CurrentWindowPingAcc = QuantiBasketAcc(begin:begin+Window,:);
+%     CurrentWindowPingGyro = QuantiBasketGyro(begin:begin+Window,:);
+%     CurrentWindowPingEMG = QuantiBasketEMG(floor(begin*scale):floor((begin+Window)*scale),:);
+%     
+      
+    begin2 = floor(rand()*10000);
+    scale = size(QuantiPingEMG,1)/size(QuantiPingAcc,1);
+
+    CurrentWindowPingAcc = QuantiPingAcc(begin2:begin2+Window,:);
+    CurrentWindowPingGyro = QuantiPingGyro(begin2:begin2+Window,:);
+    CurrentWindowPingEMG = QuantiPingEMG(floor(begin2*scale):floor((begin2+Window)*scale),:);
+    while (nbfen<3)
+        [TSGyro,TSEMG,TSAcc] = peakDetection(CurrentWindowEpiGyro,CurrentWindowEpiEMG,CurrentWindowEpiAcc);
+        [PeaksPingGyro,PeaksPingEMG,PeaksPingAcc] = peakDetection(CurrentWindowPingGyro,CurrentWindowPingEMG,CurrentWindowPingAcc);
+        if(PeaksPingGyro>0.9*TSGyro || PeaksPingEMG>0.9*TSEMG || PeaksPingAcc > 0.9*TSAcc)
+            nbfen = nbfen+1;
+        else
+            nbfen = 0;
+        end
+        
+        begin1 = begin1+Window;
+        begin2 = begin2+Window;
+        if begin1+Window>size(QuantiEpiAcc,1) || begin2+Window>size(QuantiPingAcc,1)
+            break
+        end
+        CurrentWindowEpiAcc = QuantiEpiAcc(begin1:begin1+Window,:);
+        CurrentWindowEpiGyro = QuantiEpiGyro(begin1:begin1+Window,:);
+        CurrentWindowEpiEMG = QuantiEpiEMG(floor(begin1*scale):floor((begin1+Window)*scale),:);
+        CurrentWindowPingAcc = QuantiPingAcc(begin2:begin2+Window,:);
+        CurrentWindowPingGyro = QuantiPingGyro(begin2:begin2+Window,:);
+        CurrentWindowPingEMG = QuantiPingEMG(floor(begin2*scale):floor((begin2+Window)*scale),:);
+    end
+    if nbfen==3
+        isCrisis = true;
+    else 
+        isCrisis = false;
+    end
+%     [PeaksRunGyro,PeaksRunEMG,PeaksRunAcc] = peakDetection(CurrentWindowRunGyro,CurrentWindowRunEMG,CurrentWindowRunAcc);
+%     [PeaksBrushGyro,PeaksBrushEMG,PeaksBrushAcc] = peakDetection(CurrentWindowBrushGyro,CurrentWindowBrushEMG,CurrentWindowBrushAcc);
+%     [PeaksBasketGyro,PeaksBasketEMG,PeaksBasketAcc] = peakDetection(CurrentWindowBasketGyro,CurrentWindowBasketEMG,CurrentWindowBasketEMG);
+%     [PeaksPingGyro,PeaksPingEMG,PeaksPingAcc] = peakDetection(CurrentWindowPingGyro,CurrentWindowPingEMG,CurrentWindowPingAcc);
+
+
+ 
+ %   clear begin1 begin2 scale CurrentWindowEpiAcc CurrentWindowEpiGyro CurrentWindowEpiEMG CurrentWindowRunGyro CurrentWindowRunEMG CurrentWindowRunAcc CurrentWindowBrushGyro CurrentWindowBrushEMG CurrentWindowBrushAcc CurrentWindowBasketGyro CurrentWindowBasketEMG CurrentWindowBasketEMG CurrentWindowPingGyro CurrentWindowPingEMG CurrentWindowPingAcc ;
 end
 
 

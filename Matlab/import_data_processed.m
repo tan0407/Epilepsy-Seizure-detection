@@ -77,4 +77,4 @@ BrushAcc = mm.myoData.accel_log();
 BrushAcc = BrushAcc(2137:31130,:);
 BrushAcc = BrushAcc-mean(BrushAcc,1);
 
-clear ans mm
+clear ans mm 

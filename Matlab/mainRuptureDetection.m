@@ -1,57 +1,6 @@
 GenEpi = crisisGenerator(EpiAcc,EpiEMG,EpiGyro);
 Window = 235; %The frequency for Gyro & Acc is over 50Hz and 200Hz for EMG; It means that a window of 235 values of Gyro is equivalent at 5s of measure 
 
-%EPI WALK
-scale = 4;
-begin = 1;    
-PreviousWindowAcc=EpiWalkAcc(begin:begin+Window,:);
-PreviousWindowEMG=EpiWalkEMG(begin*scale:(begin+Window)*scale,:);
-PreviousWindowGyro=EpiWalkGyro(begin:begin+Window,:);
-
-begin = begin + Window;    
-
-CurrentWindowAcc=EpiWalkAcc(begin:begin+Window,:);
-CurrentWindowEMG=EpiWalkEMG(begin*scale:(begin+Window)*scale,:);
-CurrentWindowGyro=EpiWalkGyro(begin:begin+Window,:);
-
-meandiffsAcc1=[];
-sdiffsAcc1=[];
-
-meandiffsGyro1=[];
-sdiffsGyro1=[];
-
-meandiffsEMG1=[];
-sdiffsEMG1=[];
-anomalyWalkEpi=false;
-while 1
-    anomalies=0;
-    [m1,s1,isRp1] =ruptureDetection(PreviousWindowAcc,CurrentWindowAcc,0.3,0.5);
-    meandiffsAcc1=[meandiffsAcc1 m1];
-    sdiffsAcc1=[sdiffsAcc1 s1];
-    [m2,s2,isRp2]= ruptureDetection(PreviousWindowEMG,CurrentWindowEMG,0.01,0.3);
-    meandiffsEMG1=[meandiffsEMG1 m2];
-    sdiffsEMG1=[sdiffsEMG1 s2];
-    [m3,s3,isRp3] = ruptureDetection(PreviousWindowGyro,CurrentWindowGyro,30,100);
-    meandiffsGyro1=[meandiffsGyro1 m3];
-    sdiffsGyro1=[sdiffsGyro1 s3];
-    anomalies = isRp1+isRp2+isRp3;
-    if anomalies>1
-        anomalyWalkEpi=true;
-        break
-    end
-    PreviousWindowAcc=CurrentWindowAcc;
-    PreviousWindowEMG=CurrentWindowEMG;
-    PreviousWindowGyro=CurrentWindowGyro;
-        
-    begin = begin+Window;
-    if begin+Window>size(EpiWalkAcc,1)
-        break
-    end
-    CurrentWindowAcc=EpiWalkAcc(begin:begin+Window,:);
-    CurrentWindowEMG=EpiWalkEMG(begin*scale:(begin+Window)*scale,:);
-    CurrentWindowGyro=EpiWalkGyro(begin:begin+Window,:);
-
-end
 
 %PINGPONG
 begin = 1;
@@ -356,5 +305,70 @@ while 1
     CurrentWindowAcc=RunAcc(begin:begin+Window,:);
     CurrentWindowEMG=RunEMG(begin*scale:(begin+Window)*scale,:);
     CurrentWindowGyro=RunGyro(begin:begin+Window,:);
+
+end
+
+
+%EPI WALK
+scale = 4;
+begin = 1;    
+PreviousWindowAcc=EpiWalkAcc(begin:begin+Window,:);
+PreviousWindowEMG=EpiWalkEMG(begin*scale:(begin+Window)*scale,:);
+PreviousWindowGyro=EpiWalkGyro(begin:begin+Window,:);
+
+begin = begin + Window;    
+
+CurrentWindowAcc=EpiWalkAcc(begin:begin+Window,:);
+CurrentWindowEMG=EpiWalkEMG(begin*scale:(begin+Window)*scale,:);
+CurrentWindowGyro=EpiWalkGyro(begin:begin+Window,:);
+
+meandiffsAcc1=[];
+sdiffsAcc1=[];
+
+meandiffsGyro1=[];
+sdiffsGyro1=[];
+
+meandiffsEMG1=[];
+sdiffsEMG1=[];
+anomalyWalkEpi=false;
+while 1
+    anomalies=0;
+    [m1,s1,isRp1] =ruptureDetection(PreviousWindowAcc,CurrentWindowAcc,0.3,0.5);
+    meandiffsAcc1=[meandiffsAcc1 m1];
+    sdiffsAcc1=[sdiffsAcc1 s1];
+    [m2,s2,isRp2]= ruptureDetection(PreviousWindowEMG,CurrentWindowEMG,0.01,0.3);
+    meandiffsEMG1=[meandiffsEMG1 m2];
+    sdiffsEMG1=[sdiffsEMG1 s2];
+    [m3,s3,isRp3] = ruptureDetection(PreviousWindowGyro,CurrentWindowGyro,30,100);
+    meandiffsGyro1=[meandiffsGyro1 m3];
+    sdiffsGyro1=[sdiffsGyro1 s3];
+    anomalies = isRp1+isRp2+isRp3;
+    if anomalies>1
+        anomalyWalkEpi=true;
+        figure('Name','sdiffsAccEpiWalk');plot(sdiffsAcc1);
+        yline(0.5,'-','Threshold')
+        figure('Name','sdiffsEMGEpiWalk');plot(sdiffsEMG1);
+        yline(0.3,'-','Threshold')
+        figure('Name','sdiffsGyroEpiWalk');plot(sdiffsGyro1);
+        yline(100,'-','Threshold')
+        figure('Name','meandiffsAccEpiWalk');plot(meandiffsAcc1);
+        yline(0.3,'-','Threshold')
+        figure('Name','meandiffsEMGEpiWalk');plot(meandiffsEMG1);
+        yline(0.01,'-','Threshold')
+        figure('Name','meandiffsGyroEpiWalk');plot(meandiffsGyro1);
+        yline(30,'-','Threshold')
+        break
+    end
+    PreviousWindowAcc=CurrentWindowAcc;
+    PreviousWindowEMG=CurrentWindowEMG;
+    PreviousWindowGyro=CurrentWindowGyro;
+        
+    begin = begin+Window;
+    if begin+Window>size(EpiWalkAcc,1)
+        break
+    end
+    CurrentWindowAcc=EpiWalkAcc(begin:begin+Window,:);
+    CurrentWindowEMG=EpiWalkEMG(begin*scale:(begin+Window)*scale,:);
+    CurrentWindowGyro=EpiWalkGyro(begin:begin+Window,:);
 
 end

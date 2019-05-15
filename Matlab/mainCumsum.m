@@ -73,11 +73,18 @@ else
 end
 clear isEpiAccCrisis2 isEpiGyroCrisis2 isEpiEMGCrisis2
 
-figure;plot(c21,'DisplayName','c21')
+figure("Name","WalkEpiAcc");plot(c21,'DisplayName','c21')
 yline(TSAcc,'-','Threshold')
-figure;plot(c22,'DisplayName','c22')
+figure("Name","WalkEpiGyro");plot(c22,'DisplayName','c22')
 yline(TSGyro,'-','Threshold')
-figure;plot(c23,'DisplayName','c23')
+figure("Name","WalkEpiEMG");plot(c23,'DisplayName','c23')
+yline(TSEMG,'-','Threshold')
+
+figure("Name","PingPongAcc");plot(c41,'DisplayName','c41')
+yline(TSAcc,'-','Threshold')
+figure("Name","PingPongGyro");plot(c42,'DisplayName','c42')
+yline(TSGyro,'-','Threshold')
+figure("Name","PingPongEMG");plot(c43,'DisplayName','c43')
 yline(TSEMG,'-','Threshold')
 % 
 % [c isEpiCrisis1] = cumsum_adaptive(GenEpi.EMG(:,1),TS,2*mean(GenEpi.EMG(:,1)));
